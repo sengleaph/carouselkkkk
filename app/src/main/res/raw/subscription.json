@@ -1,0 +1,72 @@
+{
+  "code": "0",
+  "msg": "success",
+  "subCode": "gemez",
+  "planName": "Gemez Daily Plan",
+  "regId": "85512479896",
+  "subscribeToken": "jzuqheqiiuyfcxjguqbbioxbvhyxmv",
+  "accountId": "855124798976",
+  "amount": "0.28 $",
+  "renew": "Tomorrow",
+  "dataList": [
+    {
+      "title": "Receiver",
+      "val": "Sengleap Seang",
+      "color": "NONE",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE"
+    },
+    {
+      "title": "Account No.",
+      "val": "855124798976 (USD)",
+      "color": "NONE",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE"
+    },
+    {
+      "title": "Debit Amount",
+      "val": "-0.28 USD",
+      "color": "RED",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE"
+    },
+    {
+      "title": "Pin",
+      "val": "8466d4",
+      "color": "NONE",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE",
+      "style": "copyGold"
+    },
+    {
+      "title": "Access Link",
+      "val": "https://kh.gemezz.mobi/?pin=8466d4",
+      "color": "NONE",
+      "isLine": "true",
+      "isBold": "false",
+      "remark": "NONE",
+      "style": "link"
+    },
+    {
+      "title": "Reference No.",
+      "val": "-0.28 USD",
+      "color": "NONE",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE"
+    },
+    {
+      "title": "Date",
+      "val": "11-Aug-2026 | 03:29 PM",
+      "color": "NONE",
+      "isLine": "false",
+      "isBold": "false",
+      "remark": "NONE"
+    }
+  ],
+  "haveSub": true
+}

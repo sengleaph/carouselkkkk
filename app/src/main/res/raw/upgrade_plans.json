@@ -1,0 +1,29 @@
+{
+  "code": "0",
+  "msg": "success",
+  "title": "Gemezz Upgrade Plan",
+  "brandCode": "GEMEZZ",
+  "plans": [
+    {
+      "planCode": "daily",
+      "title": "Daily",
+      "price": "$1.00",
+      "theme": "pink",
+      "recommended": false
+    },
+    {
+      "planCode": "weekly",
+      "title": "Weekly",
+      "price": "$17.00",
+      "theme": "purple",
+      "recommended": true
+    },
+    {
+      "planCode": "monthly",
+      "title": "Monthly",
+      "price": "$60.00",
+      "theme": "blue",
+      "recommended": false
+    }
+  ]
+}

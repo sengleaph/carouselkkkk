@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MySub</string>
+
+    <string name="title_category_default">Entertainment</string>
+    <string name="colon">:</string>
+    <string name="action_cancel_subscription">Cancel Subscription</string>
+    <string name="action_retry">Retry</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_copy">Copy</string>
+    <string name="cd_more">More options</string>
+    <string name="copied_format">%1$s copied</string>
+    <string name="empty_details">No subscription details to show.</string>
+    <string name="no_browser">No app available to open this link</string>
+
+    <string name="menu_edit_account">Edit Account</string>
+    <string name="menu_upgrade_plan">Upgrade Plan</string>
+
+    <string name="cd_close">Close</string>
+    <string name="action_ok">OK</string>
+    <string name="upgrade_selected_format">%1$s selected — %2$s</string>
+
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_parsing">Could not read the subscription data.</string>
+    <string name="error_not_found">Subscription not found.</string>
+</resources>
