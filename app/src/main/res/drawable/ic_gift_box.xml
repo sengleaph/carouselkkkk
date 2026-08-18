@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The glossy gift box from the design, drawn as an isometric box: one rhombus
+  top face and two side faces, with translucent gradient fills so the burst
+  behind it shows through the "glass". Replace with the real asset (a PNG/WebP
+  in mipmap) if the designer hands one over — the ImageView src is the only
+  reference.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Halo, so the box separates from the rays without a hard edge. -->
+    <path android:pathData="M60,6 L114,52 L60,116 L6,52 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="60"
+                android:centerY="58"
+                android:endColor="#00FFFFFF"
+                android:gradientRadius="52"
+                android:startColor="#3DFFFFFF"
+                android:type="radial" />
+        </aapt:attr>
+    </path>
+
+    <!-- Right face (magenta). -->
+    <path android:pathData="M102,46 L60,68 L60,110 L102,88 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endColor="#B35B1B8C"
+                android:endX="102"
+                android:endY="110"
+                android:startColor="#D9EF6FD2"
+                android:startX="60"
+                android:startY="62"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Left face (violet). -->
+    <path android:pathData="M18,46 L60,68 L60,110 L18,88 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endColor="#B34E23AE"
+                android:endX="18"
+                android:endY="110"
+                android:startColor="#D9B583F7"
+                android:startX="60"
+                android:startY="62"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Lid. -->
+    <path android:pathData="M60,24 L18,46 L60,68 L102,46 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endColor="#D9A98BEE"
+                android:endX="60"
+                android:endY="68"
+                android:startColor="#F2EFDDFF"
+                android:startX="60"
+                android:startY="24"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Specular streak on the lid: cheap way to read as glass. -->
+    <path
+        android:fillColor="#33FFFFFF"
+        android:pathData="M30,45 L52,33 L58,36 L36,48 Z" />
+
+    <!-- Ribbon down each side face, aligned with the lid bands below. -->
+    <path
+        android:fillColor="#B3FFFFFF"
+        android:pathData="M34,54.4 L44,59.6 L44,101.6 L34,96.4 Z" />
+    <path
+        android:fillColor="#99FFFFFF"
+        android:pathData="M86,54.4 L76,59.6 L76,101.6 L86,96.4 Z" />
+
+    <!-- The two lid bands, crossing under the bow. -->
+    <path
+        android:fillColor="#CCFFFFFF"
+        android:pathData="M75.5,32.1 L33.5,54.1 L44.5,59.9 L86.5,37.9 Z" />
+    <path
+        android:fillColor="#E0FFFFFF"
+        android:pathData="M44.5,32.1 L86.5,54.1 L75.5,59.9 L33.5,37.9 Z" />
+
+    <!-- Bow: two loops, then the knot on top of them. -->
+    <path
+        android:fillColor="#D9A8E2FF"
+        android:pathData="M58,27 C56,20 50,8 42,8 C33,8 30,17 34,22 C38,27 50,29 58,29 Z" />
+    <path
+        android:fillColor="#D9C2ECFF"
+        android:pathData="M62,27 C64,20 70,8 78,8 C87,8 90,17 86,22 C82,27 70,29 62,29 Z" />
+    <path
+        android:fillColor="#F0E6F7FF"
+        android:pathData="M60,21 C62.8,21 65,23.2 65,26 C65,28.8 62.8,31 60,31 C57.2,31 55,28.8 55,26 C55,23.2 57.2,21 60,21 Z" />
+
+</vector>

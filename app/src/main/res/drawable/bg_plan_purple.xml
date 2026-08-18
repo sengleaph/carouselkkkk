@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient
-        android:angle="315"
-        android:startColor="#FF7B4DF3"
-        android:centerColor="#FFB44BE8"
-        android:endColor="#FF4FC3F7"
-        android:type="linear" />
-    <corners android:radius="12dp" />
-</shape>
+<!--
+  Plan card artwork: a radial glow behind the light burst, then the vignette.
+  Layered rather than baked into one image so all three themes share the burst.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:centerColor="#FF7B45E6"
+                android:centerX="0.5"
+                android:centerY="0.44"
+                android:endColor="#FF461C9C"
+                android:gradientRadius="120dp"
+                android:startColor="#FFA277FF"
+                android:type="radial" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+
+    <item
+        android:drawable="@drawable/bg_plan_rays"
+        android:gravity="fill" />
+
+    <item android:drawable="@drawable/bg_plan_vignette" />
+
+</layer-list>

@@ -8,23 +8,28 @@
     <style name="Theme.MySub" parent="Base.Theme.MySub" />
 
     <!--
-      Dialog-style screen: the activity underneath stays visible, and the layout's
-      own scrim supplies the dim. windowIsTranslucent is what keeps the previous
-      activity drawn instead of being stopped behind an opaque window.
+      The upgrade sheet is a BottomSheetDialogFragment. The dialog background is
+      cleared so the rounded panel in the sheet layout (bg_sheet) is what shows;
+      leaving the Material background in place would draw a second, square-ish
+      surface behind it. enableEdgeToEdge lets Material pad the sheet for the
+      navigation bar itself.
     -->
-    <style name="Theme.MySub.Sheet" parent="Theme.MySub">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@style/Animation.MySub.Sheet</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="ThemeOverlay.MySub.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.MySub.BottomSheet</item>
+        <item name="enableEdgeToEdge">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Animation.MySub.Sheet" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/sheet_slide_up</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
-        <item name="android:activityCloseEnterAnimation">@null</item>
-        <item name="android:activityCloseExitAnimation">@anim/sheet_slide_down</item>
+    <style name="Widget.MySub.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="behavior_skipCollapsed">true</item>
+        <item name="behavior_fitToContents">true</item>
+        <!--
+          Material would pad the *container* for the navigation bar, which stops
+          the white panel short of the screen edge. The panel takes the inset as
+          its own padding instead — see UpgradePlanBottomSheet.applyInsets.
+        -->
+        <item name="paddingBottomSystemWindowInsets">false</item>
     </style>
 </resources>

@@ -1,38 +1,48 @@
 package com.sifu.mysub.presentation.upgrade
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sifu.mysub.MySubApplication
 import com.sifu.mysub.R
-import com.sifu.mysub.databinding.ActivityUpgradePlanBinding
+import com.sifu.mysub.databinding.SheetUpgradePlanBinding
 import com.sifu.mysub.presentation.upgrade.adapter.PlanCarouselAdapter
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
- * The upgrade sheet. Runs as a translucent Activity so the subscription screen
- * stays visible behind the scrim, and is reached with a plain Intent.
+ * The upgrade plan carousel, as a modal bottom sheet.
+ *
+ * A [BottomSheetDialogFragment] rather than a translucent Activity: the dim, the
+ * outside-tap dismiss, the swipe-down gesture and the slide animation all come
+ * for free, and the flow stays inside the host Activity.
  */
-class UpgradePlanActivity : AppCompatActivity() {
+class UpgradePlanBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding: ActivityUpgradePlanBinding
+    private var _binding: SheetUpgradePlanBinding? = null
+    private val binding get() = requireNotNull(_binding)
 
-    private val viewModel: UpgradePlanViewModel by viewModels {
-        (application as MySubApplication).container.upgradePlanViewModelFactory()
+    private val viewModel: UpgradePlanViewModel by lazy {
+        val factory = (requireActivity().application as MySubApplication)
+            .container
+            .upgradePlanViewModelFactory()
+        ViewModelProvider(this, factory)[UpgradePlanViewModel::class.java]
     }
 
     private val adapter by lazy {
@@ -48,12 +58,20 @@ class UpgradePlanActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityUpgradePlanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    /** Transparent sheet background so the layout supplies the rounded panel. */
+    override fun getTheme() = R.style.ThemeOverlay_MySub_BottomSheet
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SheetUpgradePlanBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         applyInsets()
         setupCarousel()
         setupClicks()
@@ -61,10 +79,25 @@ class UpgradePlanActivity : AppCompatActivity() {
         observeEvents()
     }
 
+    override fun onStart() {
+        super.onStart()
+        // The panel is short, so a collapsed state would only clip it: open
+        // fully, and let a drag down dismiss rather than collapse.
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            skipCollapsed = true
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
+    }
+
+    /**
+     * Keeps the white panel running all the way to the bottom edge: the sheet
+     * itself takes the navigation-bar inset as padding, instead of the dialog
+     * container being padded and leaving a gap under the panel.
+     */
     private fun applyInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.upgradeRoot) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.sheet) { view, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.sheet.updatePadding(bottom = bars.bottom)
+            view.updatePadding(bottom = bars.bottom)
             insets
         }
     }
@@ -79,13 +112,13 @@ class UpgradePlanActivity : AppCompatActivity() {
      *     later page would draw on top of the one being centred.
      */
     private fun setupCarousel() = with(binding.planCarousel) {
-        adapter = this@UpgradePlanActivity.adapter
+        adapter = this@UpgradePlanBottomSheet.adapter
         offscreenPageLimit = 3
 
         val sidePadding = (resources.displayMetrics.widthPixels * SIDE_PADDING_RATIO).toInt()
 
         // The padding goes on the inner RecyclerView, NOT on ViewPager2: padding
-        // on ViewPager2 shrinks the RecyclerView's bounds, and a child only gets
+        // on ViewPager2 shrinks the RecyclerView bounds, and a child only gets
         // touch events inside its own bounds — the side cards would still draw
         // (clipChildren=false) but swipes starting on them would be ignored.
         (getChildAt(0) as? RecyclerView)?.apply {
@@ -116,7 +149,6 @@ class UpgradePlanActivity : AppCompatActivity() {
 
     private fun setupClicks() = with(binding) {
         btnClose.setOnClickListener { viewModel.onIntent(UpgradePlanIntent.Close) }
-        scrimTouch.setOnClickListener { viewModel.onIntent(UpgradePlanIntent.Close) }
         btnOk.setOnClickListener { viewModel.onIntent(UpgradePlanIntent.Confirm) }
     }
 
@@ -134,7 +166,7 @@ class UpgradePlanActivity : AppCompatActivity() {
             }
             // Two ordering hazards here:
             //  - setCurrentItem on a not-yet-populated adapter is dropped, so it
-            //    has to run in submitList's commit callback;
+            //    has to run in the submitList commit callback;
             //  - that callback runs synchronously on the empty -> populated fast
             //    path, i.e. before the pager has laid out, where the scroll is
             //    dropped again. post() defers it past that first layout pass.
@@ -168,7 +200,7 @@ class UpgradePlanActivity : AppCompatActivity() {
                 is UpgradePlanUiEvent.Confirmed -> {
                     // TODO: hand the chosen plan to the purchase flow.
                     Toast.makeText(
-                        this@UpgradePlanActivity,
+                        requireContext(),
                         getString(
                             R.string.upgrade_selected_format,
                             event.plan.title,
@@ -176,34 +208,40 @@ class UpgradePlanActivity : AppCompatActivity() {
                         ),
                         Toast.LENGTH_SHORT
                     ).show()
-                    finish()
+                    dismiss()
                 }
 
-                UpgradePlanUiEvent.Dismiss -> finish()
+                UpgradePlanUiEvent.Dismiss -> dismiss()
             }
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         binding.planCarousel.unregisterOnPageChangeCallback(pageChangeCallback)
-        super.onDestroy()
+        _binding = null
+        super.onDestroyView()
     }
 
+    /** Bound to the view lifecycle: collection stops when the sheet view goes. */
     private inline fun launchWhenStarted(crossinline block: suspend () -> Unit) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { block() }
         }
     }
 
-    private companion object {
+    companion object {
+        const val TAG = "UpgradePlanBottomSheet"
+
+        fun newInstance() = UpgradePlanBottomSheet()
+
         /** Fraction of screen width reserved on each side for the peeking cards. */
-        const val SIDE_PADDING_RATIO = 0.30f
+        private const val SIDE_PADDING_RATIO = 0.30f
 
         /** How far neighbours slide towards the centre, as a fraction of page width. */
-        const val OVERLAP_RATIO = 0.20f
+        private const val OVERLAP_RATIO = 0.20f
 
-        const val MIN_SCALE = 0.80f
-        const val MIN_ALPHA = 0.65f
-        const val LIFT_DP = 8f
+        private const val MIN_SCALE = 0.80f
+        private const val MIN_ALPHA = 0.65f
+        private const val LIFT_DP = 8f
     }
 }

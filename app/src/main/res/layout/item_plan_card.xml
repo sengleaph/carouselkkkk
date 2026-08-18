@@ -21,9 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        app:cardCornerRadius="12dp"
+        app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
-        app:strokeWidth="0dp">
+        app:strokeColor="@color/plan_card_stroke"
+        app:strokeWidth="1dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -37,40 +38,41 @@
 
             <ImageView
                 android:id="@+id/ivPlanIcon"
-                android:layout_width="58dp"
-                android:layout_height="58dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="34dp"
-                android:alpha="0.92"
+                android:layout_marginTop="26dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_gift" />
+                android:src="@drawable/ic_gift_box" />
 
             <LinearLayout
+                android:id="@+id/priceLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_price_label"
+                android:elevation="3dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingVertical="8dp">
+                android:paddingVertical="7dp">
 
                 <TextView
                     android:id="@+id/tvPlanTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/plan_title_gold"
-                    android:textSize="10sp"
-                    tools:text="Weekly" />
+                    android:textSize="11sp"
+                    tools:text="Daily" />
 
                 <TextView
                     android:id="@+id/tvPlanPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_primary"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="$17.00" />
+                    tools:text="$12.00" />
             </LinearLayout>
         </FrameLayout>
     </com.google.android.material.card.MaterialCardView>

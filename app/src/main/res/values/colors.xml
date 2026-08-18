@@ -30,4 +30,6 @@
     <!-- Upgrade sheet -->
     <color name="scrim">#99000000</color>
     <color name="plan_title_gold">#FFE8981C</color>
+    <!-- Hairline highlight on the plan card, so its edge reads against the rim. -->
+    <color name="plan_card_stroke">#59FFFFFF</color>
 </resources>

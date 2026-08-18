@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Light burst behind the gift box. Every beam is the same triangle rotated
+  about the centre; the tips run past the viewport on purpose so the clip
+  crops them square against the card edge instead of tapering to a point.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="0.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="22.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="45.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="67.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="90.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="112.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="135.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="157.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="180.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="202.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="225.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="247.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="270.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="292.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="315.0">
+        <path
+            android:fillColor="#2EFFFFFF"
+            android:pathData="M60,60 L51,-45 L69,-45 Z" />
+    </group>
+    <group
+        android:pivotX="60"
+        android:pivotY="60"
+        android:rotation="337.5">
+        <path
+            android:fillColor="#1CFFFFFF"
+            android:pathData="M60,60 L55.5,-45 L64.5,-45 Z" />
+    </group>
+</vector>

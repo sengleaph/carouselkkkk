@@ -27,7 +27,7 @@ import com.sifu.mysub.MySubApplication
 import com.sifu.mysub.R
 import com.sifu.mysub.databinding.ActivityMainBinding
 import com.sifu.mysub.presentation.subscription.adapter.DetailRowAdapter
-import com.sifu.mysub.presentation.upgrade.UpgradePlanActivity
+import com.sifu.mysub.presentation.upgrade.UpgradePlanBottomSheet
 import kotlinx.coroutines.launch
 
 /**
@@ -103,14 +103,25 @@ class SubscriptionActivity : AppCompatActivity() {
 
                 is SubscriptionUiEvent.OpenUrl -> openUrl(event.url)
 
-                SubscriptionUiEvent.NavigateToUpgradePlan ->
-                    startActivity(Intent(this@SubscriptionActivity, UpgradePlanActivity::class.java))
+                SubscriptionUiEvent.NavigateToUpgradePlan -> showUpgradeSheet()
 
                 // TODO: replace with real navigation once that screen exists.
                 SubscriptionUiEvent.NavigateToEditAccount ->
                     toast(getString(R.string.menu_edit_account))
             }
         }
+    }
+
+    /**
+     * Opens the upgrade carousel as a modal bottom sheet.
+     *
+     * The tag lookup makes this idempotent: a second event (say a double tap on
+     * the menu item) would otherwise stack a second sheet on top of the first.
+     */
+    private fun showUpgradeSheet() {
+        if (supportFragmentManager.findFragmentByTag(UpgradePlanBottomSheet.TAG) != null) return
+        UpgradePlanBottomSheet.newInstance()
+            .show(supportFragmentManager, UpgradePlanBottomSheet.TAG)
     }
 
     private fun render(state: SubscriptionUiState) = with(binding) {

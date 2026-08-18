@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Darkens the card edges. Drawn over the rays so they fade out towards the
+  border instead of stopping dead against it.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:centerColor="#14000000"
+        android:centerX="0.5"
+        android:centerY="0.44"
+        android:endColor="#59200A52"
+        android:gradientRadius="105dp"
+        android:startColor="#00000000"
+        android:type="radial" />
+    <corners android:radius="14dp" />
+</shape>
