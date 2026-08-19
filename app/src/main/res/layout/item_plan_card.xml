@@ -1,79 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Root is a plain FrameLayout so ViewPager2's page transformer can scale it.
-  selectionGlow sits *behind* the card and is revealed by the transformer as the
-  page approaches centre — that keeps the highlight smooth without rebinding.
+  One carousel page.
+
+  Root is a plain FrameLayout so ViewPager2's page transformer can scale and
+  translate it freely. The card face is a single asset: pinbase.png already
+  carries the rounded corners, the white rim, the light burst and the gift box,
+  so there is no card view, no artwork layer and no gift icon here: only the
+  artwork and the price pill that sits over its empty lower third.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/selectionGlow"
+    <!--
+      fitXY, not fitCenter: the page box is sized by the carousel maths and is a
+      few percent off the asset's 180:241, and stretching that little is less
+      visible than letterboxing the card away from the price pill.
+    -->
+    <ImageView
+        android:id="@+id/planArtwork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_plan_selected" />
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/pinbase" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/planCard"
+    <LinearLayout
+        android:id="@+id/priceLabel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        app:cardCornerRadius="14dp"
-        app:cardElevation="0dp"
-        app:strokeColor="@color/plan_card_stroke"
-        app:strokeWidth="1dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_price_label"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="5dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvPlanTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/plan_title_gold"
+            android:textSize="10sp"
+            tools:text="Daily" />
 
-            <View
-                android:id="@+id/planArtwork"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:background="@drawable/bg_plan_purple" />
-
-            <ImageView
-                android:id="@+id/ivPlanIcon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="26dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_gift_box" />
-
-            <LinearLayout
-                android:id="@+id/priceLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_price_label"
-                android:elevation="3dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingVertical="7dp">
-
-                <TextView
-                    android:id="@+id/tvPlanTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/plan_title_gold"
-                    android:textSize="11sp"
-                    tools:text="Daily" />
-
-                <TextView
-                    android:id="@+id/tvPlanPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="$12.00" />
-            </LinearLayout>
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/tvPlanPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="$12.00" />
+    </LinearLayout>
 </FrameLayout>

@@ -63,9 +63,10 @@
         tools:text="Gemezz Upgrade Plan" />
 
     <!--
-      clipToPadding/clipChildren=false let the neighbouring pages bleed into
-      the horizontal padding; that padding is what makes them "peek".
-      It is set in code because it has to be a fraction of the screen width.
+      clipToPadding/clipChildren=false let the neighbouring pages bleed out of
+      the pager bounds; that bleed is what makes them "peek". The height here is
+      only a fallback: setUpCarousel() replaces it with a per-screen-size value,
+      because the card box has to stay in step with the transform maths.
     -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/planCarousel"
@@ -77,6 +78,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <!--
+      Edge masks. On a fold or a tablet the row is wide enough that the outer
+      cards reach the panel edge instead of fading out of the stack; these cover
+      that strip in the panel colour. Declared after the pager so they draw over
+      it, and gone until setUpCarousel() shows them.
+    -->
+    <View
+        android:id="@+id/hideLeft"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/planCarousel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/planCarousel"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.05"
+        tools:visibility="gone" />
+
+    <View
+        android:id="@+id/hideRight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/planCarousel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/planCarousel"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.05"
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress"

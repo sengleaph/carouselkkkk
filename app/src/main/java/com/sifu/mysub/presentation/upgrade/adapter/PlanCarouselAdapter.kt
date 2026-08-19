@@ -2,13 +2,10 @@ package com.sifu.mysub.presentation.upgrade.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sifu.mysub.R
 import com.sifu.mysub.databinding.ItemPlanCardBinding
-import com.sifu.mysub.domain.model.PlanTheme
 import com.sifu.mysub.domain.model.UpgradePlan
 
 class PlanCarouselAdapter(
@@ -28,14 +25,11 @@ class PlanCarouselAdapter(
         private val onPlanClick: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        // The card face is the pinbase artwork, set once in the layout and the
+        // same for every plan, so binding only fills in the price pill.
         fun bind(plan: UpgradePlan) = with(binding) {
             tvPlanTitle.text = plan.title
             tvPlanPrice.text = plan.price
-
-            planArtwork.background = ContextCompat.getDrawable(
-                root.context,
-                plan.theme.artworkRes()
-            )
 
             // Tapping an off-centre card scrolls it into place.
             root.setOnClickListener {
@@ -43,13 +37,6 @@ class PlanCarouselAdapter(
                     onPlanClick(bindingAdapterPosition)
                 }
             }
-        }
-
-        /** Domain theme -> drawable. Resource IDs stay out of the domain layer. */
-        private fun PlanTheme.artworkRes(): Int = when (this) {
-            PlanTheme.PURPLE -> R.drawable.bg_plan_purple
-            PlanTheme.BLUE -> R.drawable.bg_plan_blue
-            PlanTheme.PINK -> R.drawable.bg_plan_pink
         }
     }
 
