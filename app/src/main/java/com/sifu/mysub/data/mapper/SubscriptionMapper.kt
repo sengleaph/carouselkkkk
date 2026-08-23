@@ -2,10 +2,12 @@ package com.sifu.mysub.data.mapper
 
 import com.sifu.mysub.data.dto.DataItemDto
 import com.sifu.mysub.data.dto.SubscriptionDto
+import com.sifu.mysub.data.dto.SuccessAuthDto
 import com.sifu.mysub.domain.model.DetailRow
 import com.sifu.mysub.domain.model.RowEmphasis
 import com.sifu.mysub.domain.model.RowStyle
 import com.sifu.mysub.domain.model.Subscription
+import com.sifu.mysub.domain.model.SuccessAuthModel
 
 /**
  * The anti-corruption layer: every transport quirk is normalised here exactly
@@ -67,4 +69,15 @@ object SubscriptionMapper {
         this?.trim().equals(STYLE_LINK, ignoreCase = true) -> RowStyle.LINK
         else -> RowStyle.PLAIN
     }
+    fun toDomain(dto: SuccessAuthDto) = SuccessAuthModel(
+        accessLink = dto.accessLink.orEmpty(),
+        code = dto.code.orEmpty(),
+        isSavedFav = dto.isSavedFav.orEmpty(),
+        key = dto.key.orEmpty(),
+        msg = dto.msg.orEmpty(),
+        msgDev = dto.msgDev,
+        pin = dto.pin.orEmpty(),
+        status = dto.status.orEmpty(),
+        svRRN = dto.svRRN.orEmpty()
+    )
 }

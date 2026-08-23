@@ -19,7 +19,7 @@
     },
     {
       "title": "Account No.",
-      "val": "855124798976 (USD)",
+      "val": "X (USD)",
       "color": "NONE",
       "isLine": "false",
       "isBold": "false",
@@ -35,7 +35,7 @@
     },
     {
       "title": "Pin",
-      "val": "8466d4",
+      "val": "X",
       "color": "NONE",
       "isLine": "false",
       "isBold": "false",
@@ -44,7 +44,7 @@
     },
     {
       "title": "Access Link",
-      "val": "https://kh.gemezz.mobi/?pin=8466d4",
+      "val": "X",
       "color": "NONE",
       "isLine": "true",
       "isBold": "false",
