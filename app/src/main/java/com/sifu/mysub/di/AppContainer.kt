@@ -22,6 +22,7 @@ import com.sifu.mysub.domain.usecase.GetSubscriptionUseCase
 import com.sifu.mysub.domain.usecase.GetSuccessAuthUseCase
 import com.sifu.mysub.domain.usecase.GetUpgradePlansUseCase
 import com.sifu.mysub.domain.usecase.ResolveRowActionUseCase
+import com.sifu.mysub.presentation.HomeViewModel
 import com.sifu.mysub.presentation.subscription.ErrorMessageMapper
 import com.sifu.mysub.presentation.subscription.SubscriptionViewModel
 import com.sifu.mysub.presentation.upgrade.UpgradePlanViewModel
@@ -88,6 +89,11 @@ class AppContainer(context: Context) {
     private val getSuccessAuthUseCase by lazy {
         GetSuccessAuthUseCase(successAuthRepository)
     }
+
+    fun homeViewModelFactory() = HomeViewModel.Factory(
+        getSubscription = getSubscriptionUseCase,
+        errorMessages = errorMessageMapper
+    )
 
     fun subscriptionViewModelFactory() = SubscriptionViewModel.Factory(
         getSubscription = getSubscriptionUseCase,

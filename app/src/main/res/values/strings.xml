@@ -22,4 +22,9 @@
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_parsing">Could not read the subscription data.</string>
     <string name="error_not_found">Subscription not found.</string>
+    <!-- Home -->
+    <string name="title_home">My Subscriptions</string>
+    <string name="home_empty">You have no active subscription yet.</string>
+    <string name="home_renew_format">Renews %1$s</string>
+    <string name="cd_open_subscription">Open subscription details</string>
 </resources>
