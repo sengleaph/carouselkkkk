@@ -35,135 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ===================== Subscription card ===================== -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardSubscription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="-14dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/card_bg"
-        app:cardCornerRadius="14dp"
-        app:cardElevation="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHomeTitle"
-        app:strokeWidth="0dp"
-        tools:visibility="visible">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="14dp">
-
-            <FrameLayout
-                android:id="@+id/logoCircle"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:background="@drawable/bg_logo_circle_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvLogoCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    android:textStyle="bold"
-                    tools:text="GEMEZ" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tvBrandName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/tvAmount"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/logoCircle"
-                app:layout_constraintTop_toTopOf="@id/logoCircle"
-                tools:text="Gemez" />
-
-            <TextView
-                android:id="@+id/tvPlanName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@id/tvRenew"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@id/tvBrandName"
-                app:layout_constraintTop_toBottomOf="@id/tvBrandName"
-                tools:text="Gemez Daily Plan" />
-
-            <TextView
-                android:id="@+id/tvAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvBrandName"
-                app:layout_constraintEnd_toStartOf="@id/ivChevron"
-                tools:text="0.28 USD" />
-
-            <TextView
-                android:id="@+id/tvRenew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/text_hint"
-                android:textSize="11sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/tvPlanName"
-                app:layout_constraintEnd_toEndOf="@id/tvAmount"
-                tools:text="Renews Tomorrow" />
-
-            <ImageView
-                android:id="@+id/ivChevron"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="4dp"
-                android:contentDescription="@string/cd_open_subscription"
-                android:src="@drawable/ic_chevron_right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- ===================== Empty / Loading / Error ===================== -->
-    <TextView
-        android:id="@+id/tvEmpty"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="24dp"
-        android:text="@string/home_empty"
-        android:textColor="@color/text_secondary"
-        android:textSize="13sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHomeTitle"
-        tools:visibility="gone" />
-
+    <!-- ===================== Loading / Error ===================== -->
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
@@ -207,5 +79,45 @@
             android:text="@string/action_retry"
             android:textAllCaps="false" />
     </LinearLayout>
+
+    <!-- ===================== Upgrade plans ===================== -->
+    <TextView
+        android:id="@+id/tvPlansTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:paddingHorizontal="18dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHomeTitle"
+        tools:text="Gemezz Upgrade Plan"
+        tools:visibility="visible" />
+
+    <!--
+      wrap_content, not 0dp: the offer is three cards, so letting the list size
+      itself keeps it a block on the page rather than a scroller that owns the
+      rest of the screen. The horizontal inset lives on the row card, so the
+      elevation shadow is not clipped by a padded parent.
+    -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:paddingBottom="6dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPlansTitle"
+        tools:listitem="@layout/item_plan_row"
+        tools:itemCount="3"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

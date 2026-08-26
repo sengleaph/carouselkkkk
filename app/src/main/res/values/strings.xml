@@ -24,7 +24,12 @@
     <string name="error_not_found">Subscription not found.</string>
     <!-- Home -->
     <string name="title_home">My Subscriptions</string>
-    <string name="home_empty">You have no active subscription yet.</string>
-    <string name="home_renew_format">Renews %1$s</string>
-    <string name="cd_open_subscription">Open subscription details</string>
+    <!-- Fallback heading when upgrade_plans.json carries no title of its own. -->
+    <string name="home_plans_title">Upgrade Plan</string>
+    <string name="home_plan_recommended">Recommended</string>
+
+    <!-- No-subscription screen -->
+    <string name="title_no_subscription">Subscription</string>
+    <string name="no_subscription_message">You have no active subscription yet. Subscribe to a plan to get started.</string>
+    <string name="action_subscribe">Subscribe</string>
 </resources>

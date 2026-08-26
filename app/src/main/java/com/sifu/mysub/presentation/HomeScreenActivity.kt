@@ -17,6 +17,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.sifu.mysub.MySubApplication
 import com.sifu.mysub.R
 import com.sifu.mysub.databinding.ActivityHomeScreenBinding
+import com.sifu.mysub.presentation.adapter.PlanRowAdapter
+import com.sifu.mysub.presentation.nosubscription.NoSubscriptionActivity
 import com.sifu.mysub.presentation.subscription.SubscriptionActivity
 import kotlinx.coroutines.launch
 
@@ -32,6 +34,8 @@ class HomeScreenActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels {
         (application as MySubApplication).container.homeViewModelFactory()
     }
+
+    private val planAdapter = PlanRowAdapter { openPlanDestination() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +60,8 @@ class HomeScreenActivity : AppCompatActivity() {
     }
 
     private fun setupViews() = with(binding) {
-        cardSubscription.setOnClickListener { openSubscription() }
         btnRetry.setOnClickListener { viewModel.load() }
+        rvPlans.adapter = planAdapter
     }
 
     private fun observeState() {
@@ -68,28 +72,33 @@ class HomeScreenActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * The heading and the list are driven off the same state pass, so a heading
+     * never outlives an offer that failed to load.
+     */
     private fun render(state: HomeUiState) = with(binding) {
         progress.isVisible = state.isLoading
         errorGroup.isVisible = state.errorMessage != null
         tvError.text = state.errorMessage.orEmpty()
 
-        cardSubscription.isVisible = state.isCardVisible
-        tvEmpty.isVisible = state.isEmptyVisible
+        tvPlansTitle.isVisible = state.arePlansVisible
+        rvPlans.isVisible = state.arePlansVisible
+        tvPlansTitle.text = state.planOfferTitle.ifBlank { getString(R.string.home_plans_title) }
 
-        tvLogoCode.text = state.brandCode
-        tvBrandName.text = state.brandName
-        tvPlanName.text = state.planName
-        tvAmount.text = state.amount
-        tvRenew.text = if (state.renew.isBlank()) {
-            ""
-        } else {
-            getString(R.string.home_renew_format, state.renew)
-        }
+        planAdapter.submitList(state.plans)
     }
 
-    private fun openSubscription() {
-        if (!viewModel.canOpenSubscription()) return
-        startActivity(Intent(this, SubscriptionActivity::class.java))
+    /**
+     * Routes a plan tap on `haveSub` from subscription.json: true opens the
+     * subscription detail, false the no-subscription screen. The ViewModel owns
+     * the rule; this only knows which Activity each answer names.
+     */
+    private fun openPlanDestination() {
+        val destination = when (viewModel.destinationForPlanTap()) {
+            HomeDestination.SUBSCRIPTION -> SubscriptionActivity::class.java
+            HomeDestination.NO_SUBSCRIPTION -> NoSubscriptionActivity::class.java
+        }
+        startActivity(Intent(this, destination))
     }
 
     private val Int.dp: Int

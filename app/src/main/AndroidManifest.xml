@@ -28,6 +28,12 @@
             android:name=".presentation.subscription.SubscriptionActivity"
             android:exported="false"
             android:parentActivityName=".presentation.HomeScreenActivity" />
+
+        <!-- The other half of the haveSub fork; same reachability as the above. -->
+        <activity
+            android:name=".presentation.nosubscription.NoSubscriptionActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.HomeScreenActivity" />
     </application>
 
 </manifest>

@@ -6,20 +6,24 @@ import androidx.lifecycle.viewModelScope
 import com.sifu.mysub.core.util.onFailure
 import com.sifu.mysub.core.util.onSuccess
 import com.sifu.mysub.domain.usecase.GetSubscriptionUseCase
+import com.sifu.mysub.domain.usecase.GetUpgradePlansUseCase
 import com.sifu.mysub.presentation.subscription.ErrorMessageMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
  * State-only ViewModel: one [StateFlow] out, plain functions in.
  *
- * Reuses [GetSubscriptionUseCase] — Home needs the same entity as the detail
- * screen, just a much smaller slice of it. No second repository, no duplicated
- * parsing.
+ * Reuses both existing use cases rather than adding repositories:
+ * [GetUpgradePlansUseCase] is the one behind the upgrade sheet, and
+ * [GetSubscriptionUseCase] is the detail screen's — Home wants a single boolean
+ * out of it, `haveSub`, to decide where a plan tap goes.
  */
 class HomeViewModel(
+    private val getUpgradePlans: GetUpgradePlansUseCase,
     private val getSubscription: GetSubscriptionUseCase,
     private val errorMessages: ErrorMessageMapper
 ) : ViewModel() {
@@ -31,24 +35,40 @@ class HomeViewModel(
         load()
     }
 
-    /** Called on first composition and by the retry button. */
+    /**
+     * Called on first composition and by the retry button.
+     *
+     * The two reads run in their own coroutines: the offer is what the screen
+     * draws, while `haveSub` only has to be settled by the time something is
+     * tapped. A failed subscription read therefore leaves the flag false and
+     * routes to the no-subscription screen, which is the safe way to be wrong.
+     */
     fun load() {
-        _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+        _uiState.update { it.loading() }
+
         viewModelScope.launch {
-            getSubscription()
-                .onSuccess { _uiState.value = HomeUiState.content(it) }
-                .onFailure { _uiState.value = HomeUiState.failure(errorMessages.map(it)) }
+            getUpgradePlans()
+                .onSuccess { offer -> _uiState.update { it.withPlans(offer) } }
+                .onFailure { error ->
+                    _uiState.update { it.withFailure(errorMessages.map(error)) }
+                }
+        }
+
+        viewModelScope.launch {
+            getSubscription().onSuccess { subscription ->
+                _uiState.update { it.withSubscriptionFlag(subscription) }
+            }
         }
     }
 
     /**
-     * "May the detail screen be opened?" is a rule, not a View concern, so the
-     * View asks rather than deciding. Guards against a tap queued just before
-     * the state flipped to no-subscription.
+     * "Where does this tap go?" is a rule, not a View concern, so the View asks
+     * rather than reading the flag and deciding for itself.
      */
-    fun canOpenSubscription(): Boolean = _uiState.value.hasSubscription
+    fun destinationForPlanTap(): HomeDestination = _uiState.value.planDestination
 
     class Factory(
+        private val getUpgradePlans: GetUpgradePlansUseCase,
         private val getSubscription: GetSubscriptionUseCase,
         private val errorMessages: ErrorMessageMapper
     ) : ViewModelProvider.Factory {
@@ -58,7 +78,7 @@ class HomeViewModel(
             require(modelClass.isAssignableFrom(HomeViewModel::class.java)) {
                 "Unknown ViewModel class: ${modelClass.name}"
             }
-            return HomeViewModel(getSubscription, errorMessages) as T
+            return HomeViewModel(getUpgradePlans, getSubscription, errorMessages) as T
         }
     }
 }

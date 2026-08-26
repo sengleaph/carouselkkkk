@@ -91,6 +91,7 @@ class AppContainer(context: Context) {
     }
 
     fun homeViewModelFactory() = HomeViewModel.Factory(
+        getUpgradePlans = getUpgradePlansUseCase,
         getSubscription = getSubscriptionUseCase,
         errorMessages = errorMessageMapper
     )
