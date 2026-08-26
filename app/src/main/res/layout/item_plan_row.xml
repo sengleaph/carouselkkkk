@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One upgrade plan, as a row on Home.
+
+  Deliberately the same card as cardSubscription in activity_home_screen.xml:
+  logo pill, a bold headline with a caption under it, and the money right-
+  aligned on the headline's baseline. The plan list sits directly beneath the
+  subscription card, so anything else would read as a different kind of thing.
+
+  The horizontal margin lives on the root here rather than on the RecyclerView,
+  so the card keeps the 14dp inset the subscription card has while the list
+  itself stays full-bleed.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardPlan"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="14dp"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/card_bg"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="14dp">
+
+        <FrameLayout
+            android:id="@+id/logoCircle"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_logo_circle_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvLogoCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:textStyle="bold"
+                tools:text="GEMEZZ" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvPlanTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvPlanCaption"
+            app:layout_constraintEnd_toStartOf="@id/tvPlanPrice"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/logoCircle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Weekly" />
+
+        <!--
+          Caption slot: carries the recommendation, and is gone without one.
+          Title and caption form a packed vertical chain rather than hanging off
+          the logo's top edge, so a row with no caption centres its title
+          instead of leaving it sitting high against the 46dp pill.
+        -->
+        <TextView
+            android:id="@+id/tvPlanCaption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/home_plan_recommended"
+            android:textColor="@color/plan_title_gold"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvPlanPrice"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/tvPlanTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanTitle"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvPlanPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvPlanTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="$17.00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
