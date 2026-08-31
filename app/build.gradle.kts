@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.viewpager2)
     implementation(libs.gson)
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

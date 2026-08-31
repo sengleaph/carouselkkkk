@@ -6,32 +6,30 @@ import com.sifu.mysub.R
 import com.sifu.mysub.core.util.AppError
 import com.sifu.mysub.core.util.DefaultDispatcherProvider
 import com.sifu.mysub.core.util.DispatcherProvider
+import com.sifu.mysub.data.repository.SubscribeMenuRepositoryImpl
+import com.sifu.mysub.data.repository.SubscriptionAuthRepositoryImpl
 import com.sifu.mysub.data.repository.SubscriptionRepositoryImpl
-import com.sifu.mysub.data.repository.SuccessAuthRepositoryImpl
-import com.sifu.mysub.data.repository.UpgradePlanRepositoryImpl
+import com.sifu.mysub.data.source.RawResSubscribeMenuDataSource
+import com.sifu.mysub.data.source.DataAuthLocalDataSource
+import com.sifu.mysub.data.source.RawResDataAuthDataSource
 import com.sifu.mysub.data.source.RawResSubscriptionDataSource
-import com.sifu.mysub.data.source.RawResSuccessAuthDataSource
-import com.sifu.mysub.data.source.RawResUpgradePlanDataSource
+import com.sifu.mysub.data.source.SubscribeMenuLocalDataSource
 import com.sifu.mysub.data.source.SubscriptionLocalDataSource
-import com.sifu.mysub.data.source.SuccessAuthLocalDataSource
-import com.sifu.mysub.data.source.UpgradePlanLocalDataSource
+import com.sifu.mysub.domain.repository.SubscribeMenuRepository
+import com.sifu.mysub.domain.repository.SubscriptionAuthRepository
 import com.sifu.mysub.domain.repository.SubscriptionRepository
-import com.sifu.mysub.domain.repository.SuccessAuthRepository
-import com.sifu.mysub.domain.repository.UpgradePlanRepository
+import com.sifu.mysub.domain.usecase.GetSubscribeMenuUseCase
+import com.sifu.mysub.domain.usecase.GetSubscriptionAuthUseCase
 import com.sifu.mysub.domain.usecase.GetSubscriptionUseCase
-import com.sifu.mysub.domain.usecase.GetSuccessAuthUseCase
-import com.sifu.mysub.domain.usecase.GetUpgradePlansUseCase
-import com.sifu.mysub.domain.usecase.ResolveRowActionUseCase
-import com.sifu.mysub.presentation.HomeViewModel
-import com.sifu.mysub.presentation.subscription.ErrorMessageMapper
-import com.sifu.mysub.presentation.subscription.SubscriptionViewModel
-import com.sifu.mysub.presentation.upgrade.UpgradePlanViewModel
+import com.sifu.mysub.presentation.detail.SubscriptionDetailViewModel
+import com.sifu.mysub.presentation.main.ErrorMessageMapper
+import com.sifu.mysub.presentation.main.MainViewModel
+import com.sifu.mysub.presentation.main.TitleProvider
+import com.sifu.mysub.presentation.service.ServiceViewModel
 
 /**
- * Manual dependency container — the composition root. Every `new` in the app
- * happens here, which is why no other class needs to know a concrete type.
- *
- * Drop-in replaceable with Hilt later: the constructors are already injection-ready.
+ * Manual dependency container — the composition root. Every construction happens
+ * here, which is why no other class needs to know a concrete type.
  */
 class AppContainer(context: Context) {
 
@@ -41,31 +39,47 @@ class AppContainer(context: Context) {
 
     private val dispatchers: DispatcherProvider by lazy { DefaultDispatcherProvider() }
 
-    private val localDataSource: SubscriptionLocalDataSource by lazy {
+    // ---------------------------------------------------------------- menu
+
+    private val menuDataSource: SubscribeMenuLocalDataSource by lazy {
+        RawResSubscribeMenuDataSource(appContext, gson)
+    }
+
+    private val menuRepository: SubscribeMenuRepository by lazy {
+        SubscribeMenuRepositoryImpl(menuDataSource, dispatchers)
+    }
+
+    private val getSubscribeMenuUseCase by lazy {
+        GetSubscribeMenuUseCase(menuRepository)
+    }
+
+    // -------------------------------------------------------- subscription
+
+    private val subscriptionDataSource: SubscriptionLocalDataSource by lazy {
         RawResSubscriptionDataSource(appContext, gson)
     }
 
     private val subscriptionRepository: SubscriptionRepository by lazy {
-        SubscriptionRepositoryImpl(localDataSource, dispatchers)
+        SubscriptionRepositoryImpl(subscriptionDataSource, dispatchers)
     }
 
     private val getSubscriptionUseCase by lazy {
         GetSubscriptionUseCase(subscriptionRepository)
     }
 
-    private val resolveRowActionUseCase by lazy { ResolveRowActionUseCase() }
-
-    private val upgradePlanDataSource: UpgradePlanLocalDataSource by lazy {
-        RawResUpgradePlanDataSource(appContext, gson)
+    private val dataAuthDataSource: DataAuthLocalDataSource by lazy {
+        RawResDataAuthDataSource(appContext, gson)
     }
 
-    private val upgradePlanRepository: UpgradePlanRepository by lazy {
-        UpgradePlanRepositoryImpl(upgradePlanDataSource, dispatchers)
+    private val subscriptionAuthRepository: SubscriptionAuthRepository by lazy {
+        SubscriptionAuthRepositoryImpl(dataAuthDataSource, dispatchers)
     }
 
-    private val getUpgradePlansUseCase by lazy {
-        GetUpgradePlansUseCase(upgradePlanRepository)
+    private val getSubscriptionAuthUseCase by lazy {
+        GetSubscriptionAuthUseCase(subscriptionAuthRepository)
     }
+
+    // --------------------------------------------------------- presentation
 
     private val errorMessageMapper = ErrorMessageMapper { error ->
         when (error) {
@@ -78,33 +92,28 @@ class AppContainer(context: Context) {
         }
     }
 
-    private val successAuthDataSource: SuccessAuthLocalDataSource by lazy {
-        RawResSuccessAuthDataSource(appContext, gson)
+    /** Keeps `R` out of the ViewModel, which stays a plain JVM class. */
+    private val titleProvider = object : TitleProvider {
+        override fun category(): String = appContext.getString(R.string.title_category)
     }
 
-    private val successAuthRepository: SuccessAuthRepository by lazy {
-        SuccessAuthRepositoryImpl(successAuthDataSource, dispatchers)
-    }
-
-    private val getSuccessAuthUseCase by lazy {
-        GetSuccessAuthUseCase(successAuthRepository)
-    }
-
-    fun homeViewModelFactory() = HomeViewModel.Factory(
-        getUpgradePlans = getUpgradePlansUseCase,
+    fun serviceViewModelFactory(serviceCode: String) = ServiceViewModel.Factory(
+        serviceCode = serviceCode,
+        getSubscribeMenu = getSubscribeMenuUseCase,
         getSubscription = getSubscriptionUseCase,
+        errorMessages = errorMessageMapper,
+        titles = titleProvider
+    )
+
+    fun subscriptionDetailViewModelFactory() = SubscriptionDetailViewModel.Factory(
+        getSubscription = getSubscriptionUseCase,
+        getSubscriptionAuth = getSubscriptionAuthUseCase,
         errorMessages = errorMessageMapper
     )
 
-    fun subscriptionViewModelFactory() = SubscriptionViewModel.Factory(
-        getSubscription = getSubscriptionUseCase,
-        resolveRowAction = resolveRowActionUseCase,
-        getSuccessAuth = getSuccessAuthUseCase,
-        errorMessages = errorMessageMapper
-    )
-
-    fun upgradePlanViewModelFactory() = UpgradePlanViewModel.Factory(
-        getUpgradePlans = getUpgradePlansUseCase,
-        errorMessages = errorMessageMapper
+    fun mainViewModelFactory() = MainViewModel.Factory(
+        getSubscribeMenu = getSubscribeMenuUseCase,
+        errorMessages = errorMessageMapper,
+        titles = titleProvider
     )
 }

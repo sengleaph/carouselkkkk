@@ -1,0 +1,14 @@
+<!--
+  Placeholder for the category mark shown over the header.
+  Replace with the real Entertainment asset (keep the name and 24dp viewport).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@color/white">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M21,6H3C1.9,6 1,6.9 1,8v8c0,1.1 0.9,2 2,2h18c1.1,0 2,-0.9 2,-2V8C23,6.9 22.1,6 21,6zM11,13H8v3H6v-3H3v-2h3V8h2v3h3V13zM15.5,15c-0.83,0 -1.5,-0.67 -1.5,-1.5s0.67,-1.5 1.5,-1.5s1.5,0.67 1.5,1.5S16.33,15 15.5,15zM19.5,11.5c-0.83,0 -1.5,-0.67 -1.5,-1.5s0.67,-1.5 1.5,-1.5S21,9.17 21,10S20.33,11.5 19.5,11.5z" />
+</vector>

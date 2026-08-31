@@ -32,4 +32,9 @@
         -->
         <item name="paddingBottomSystemWindowInsets">false</item>
     </style>
+    <!-- Rounds the remote service artwork to match the plan cards. -->
+    <style name="ShapeAppearanceOverlay.MySub.ServiceImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

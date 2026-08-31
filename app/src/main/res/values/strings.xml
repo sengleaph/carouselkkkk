@@ -32,4 +32,13 @@
     <string name="title_no_subscription">Subscription</string>
     <string name="no_subscription_message">You have no active subscription yet. Subscribe to a plan to get started.</string>
     <string name="action_subscribe">Subscribe</string>
+    <!-- Subscribe menu -->
+    <string name="menu_title">Subscribe</string>
+    <string name="title_subscription">My Subscription</string>
+    <string name="title_category">Entertainment</string>
+    <string name="search_hint">Search...</string>
+    <string name="search_empty">No results for your search.</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_service_logo">Service logo</string>
+    <string name="plan_selected_format">%1$s selected — %2$s</string>
 </resources>

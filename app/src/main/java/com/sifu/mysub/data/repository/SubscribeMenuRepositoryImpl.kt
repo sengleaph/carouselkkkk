@@ -3,34 +3,37 @@ package com.sifu.mysub.data.repository
 import com.sifu.mysub.core.util.AppError
 import com.sifu.mysub.core.util.AppResult
 import com.sifu.mysub.core.util.DispatcherProvider
-import com.sifu.mysub.data.dto.SubscriptionDto
-import com.sifu.mysub.data.mapper.SubscriptionMapper
+import com.sifu.mysub.data.dto.SubscribeMenuResponseDto
+import com.sifu.mysub.data.mapper.SubscribeMenuMapper
 import com.sifu.mysub.data.source.MalformedRawJsonException
-import com.sifu.mysub.data.source.SubscriptionLocalDataSource
-import com.sifu.mysub.domain.model.Subscription
-import com.sifu.mysub.domain.repository.SubscriptionRepository
+import com.sifu.mysub.data.source.SubscribeMenuLocalDataSource
+import com.sifu.mysub.domain.model.SubscribeService
+import com.sifu.mysub.domain.repository.SubscribeMenuRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
-class SubscriptionRepositoryImpl(
-    private val localDataSource: SubscriptionLocalDataSource,
+class SubscribeMenuRepositoryImpl(
+    private val localDataSource: SubscribeMenuLocalDataSource,
     private val dispatchers: DispatcherProvider
-) : SubscriptionRepository {
+) : SubscribeMenuRepository {
 
-    override suspend fun getSubscription(): AppResult<Subscription> =
+    override suspend fun getSubscribeMenu(): AppResult<List<SubscribeService>> =
         withContext(dispatchers.io) {
             try {
-                val dto = localDataSource.readSubscription()
+                val dto = localDataSource.readSubscribeMenu()
 
-                if (dto.code != SubscriptionDto.CODE_SUCCESS) {
+                if (dto.code != SubscribeMenuResponseDto.CODE_SUCCESS) {
                     return@withContext AppResult.Failure(
                         AppError.Business(code = dto.code, message = dto.msg)
                     )
                 }
 
-                // No NotFound check here: haveSub=false is a valid answer, not a
-                // failure. It is the whole point of reading this file.
-                AppResult.Success(SubscriptionMapper.toDomain(dto))
+                val services = SubscribeMenuMapper.toDomain(dto)
+                if (services.isEmpty()) {
+                    return@withContext AppResult.Failure(AppError.NotFound())
+                }
+
+                AppResult.Success(services)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: MalformedRawJsonException) {

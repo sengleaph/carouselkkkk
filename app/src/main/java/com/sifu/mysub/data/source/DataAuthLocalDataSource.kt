@@ -5,30 +5,30 @@ import androidx.annotation.RawRes
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.sifu.mysub.R
-import com.sifu.mysub.data.dto.SubscriptionDto
+import com.sifu.mysub.data.dto.DataAuthDto
 
-interface SubscriptionLocalDataSource {
-    fun readSubscription(): SubscriptionDto
+interface DataAuthLocalDataSource {
+    fun readDataAuth(): DataAuthDto
 }
 
-class RawResSubscriptionDataSource(
+class RawResDataAuthDataSource(
     context: Context,
     private val gson: Gson = Gson(),
-    @RawRes private val rawResId: Int = R.raw.subscription
-) : SubscriptionLocalDataSource {
+    @RawRes private val rawResId: Int = R.raw.dataauth
+) : DataAuthLocalDataSource {
 
     private val appContext = context.applicationContext
 
-    override fun readSubscription(): SubscriptionDto {
+    override fun readDataAuth(): DataAuthDto {
         val json = appContext.resources.openRawResource(rawResId)
             .bufferedReader()
             .use { it.readText() }
 
         return try {
-            gson.fromJson(json, SubscriptionDto::class.java)
-                ?: throw JsonSyntaxException("subscription.json parsed to null")
+            gson.fromJson(json, DataAuthDto::class.java)
+                ?: throw JsonSyntaxException("dataauth.json parsed to null")
         } catch (e: JsonSyntaxException) {
-            throw MalformedRawJsonException("subscription.json", e)
+            throw MalformedRawJsonException("dataauth.json", e)
         }
     }
 }

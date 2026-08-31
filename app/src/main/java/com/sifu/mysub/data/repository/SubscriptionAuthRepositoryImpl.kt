@@ -3,34 +3,36 @@ package com.sifu.mysub.data.repository
 import com.sifu.mysub.core.util.AppError
 import com.sifu.mysub.core.util.AppResult
 import com.sifu.mysub.core.util.DispatcherProvider
-import com.sifu.mysub.data.dto.SubscriptionDto
-import com.sifu.mysub.data.mapper.SubscriptionMapper
+import com.sifu.mysub.data.dto.DataAuthDto
+import com.sifu.mysub.data.source.DataAuthLocalDataSource
 import com.sifu.mysub.data.source.MalformedRawJsonException
-import com.sifu.mysub.data.source.SubscriptionLocalDataSource
-import com.sifu.mysub.domain.model.Subscription
-import com.sifu.mysub.domain.repository.SubscriptionRepository
+import com.sifu.mysub.domain.model.SubscriptionAuth
+import com.sifu.mysub.domain.repository.SubscriptionAuthRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
-class SubscriptionRepositoryImpl(
-    private val localDataSource: SubscriptionLocalDataSource,
+class SubscriptionAuthRepositoryImpl(
+    private val localDataSource: DataAuthLocalDataSource,
     private val dispatchers: DispatcherProvider
-) : SubscriptionRepository {
+) : SubscriptionAuthRepository {
 
-    override suspend fun getSubscription(): AppResult<Subscription> =
+    override suspend fun getSubscriptionAuth(): AppResult<SubscriptionAuth> =
         withContext(dispatchers.io) {
             try {
-                val dto = localDataSource.readSubscription()
+                val dto = localDataSource.readDataAuth()
 
-                if (dto.code != SubscriptionDto.CODE_SUCCESS) {
+                if (dto.code != DataAuthDto.CODE_SUCCESS) {
                     return@withContext AppResult.Failure(
                         AppError.Business(code = dto.code, message = dto.msg)
                     )
                 }
 
-                // No NotFound check here: haveSub=false is a valid answer, not a
-                // failure. It is the whole point of reading this file.
-                AppResult.Success(SubscriptionMapper.toDomain(dto))
+                AppResult.Success(
+                    SubscriptionAuth(
+                        pin = dto.pin?.trim().orEmpty(),
+                        accessLink = dto.accessLink?.trim().orEmpty()
+                    )
+                )
             } catch (e: CancellationException) {
                 throw e
             } catch (e: MalformedRawJsonException) {

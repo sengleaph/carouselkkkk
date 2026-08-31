@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Category screen: blue header with the category mark over it, then a white
-  panel carrying the search field and the card list.
-
-  The panel is a sibling of the header rather than a child, so its rounded top
-  corners sit over the blue while the list inside it scrolls independently.
+  Second-level screen: the brand on the blue header, then either its
+  subscription card or its plans. Also used by the subscription detail, which
+  is the same shape with the brand header hidden.
 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainRoot"
+    android:id="@+id/serviceRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_bg"
-    tools:context=".MainActivity">
+    tools:context=".presentation.service.ServiceActivity">
 
     <View
         android:id="@+id/headerBg"
@@ -26,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ===================== Toolbar ===================== -->
     <FrameLayout
         android:id="@+id/toolbarRow"
         android:layout_width="0dp"
@@ -67,33 +64,7 @@
             android:src="@drawable/ic_brand_logo" />
     </FrameLayout>
 
-    <!--
-      Two header marks, one per mode: the teal category tile while browsing, the
-      brand circle once there is a subscription. Both hang off the toolbar and a
-      barrier tracks whichever is showing, so the panel below never has to know
-      which one it is sitting under.
-    -->
-    <FrameLayout
-        android:id="@+id/categoryIcon"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="22dp"
-        android:background="@drawable/bg_category_icon"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarRow"
-        tools:visibility="visible">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_category_game" />
-    </FrameLayout>
-
+    <!-- The brand mark. Gone on the detail screen, where the toolbar names it. -->
     <LinearLayout
         android:id="@+id/brandHeader"
         android:layout_width="wrap_content"
@@ -106,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarRow"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <FrameLayout
             android:layout_width="64dp"
@@ -121,7 +92,17 @@
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                tools:text="GEMEZZ" />
+                tools:text="GEMEZ" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivHeaderLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/cd_service_logo"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MySub.ServiceImage"
+                tools:visibility="visible" />
         </FrameLayout>
 
         <TextView
@@ -131,7 +112,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
             android:textSize="12sp"
-            tools:text="Gemezz" />
+            tools:text="Gemez" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Barrier
@@ -139,79 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="categoryIcon,brandHeader" />
-
-    <!-- ===================== White panel ===================== -->
-    <View
-        android:id="@+id/panelBg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_sheet"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
-        tools:visibility="visible" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/searchField"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_search_field"
-        android:paddingHorizontal="12dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
-        tools:visibility="visible">
-
-        <ImageView
-            android:id="@+id/ivSearch"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/edtSearch"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:autofillHints="name"
-            android:background="@null"
-            android:hint="@string/search_hint"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_hint"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/btnClearSearch"
-            app:layout_constraintStart_toEndOf="@id/ivSearch"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btnClearSearch"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/cd_clear_search"
-            android:padding="8dp"
-            android:src="@drawable/ic_close"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_hint"
-            tools:visibility="visible" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:constraint_referenced_ids="toolbarRow,brandHeader" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvContent"
@@ -224,24 +133,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchField"
+        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
         tools:listitem="@layout/item_card"
         tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/tvEmpty"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="32dp"
-        android:text="@string/search_empty"
-        android:textColor="@color/text_secondary"
-        android:textSize="13sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchField"
-        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -251,7 +145,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchField"
+        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
         tools:visibility="gone" />
 
     <LinearLayout
@@ -265,7 +159,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchField"
+        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
         tools:visibility="gone">
 
         <TextView

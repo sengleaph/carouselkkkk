@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- subscribeMenu[].image points at remote artwork. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MySubApplication"
         android:allowBackup="true"
@@ -14,7 +17,7 @@
         android:theme="@style/Theme.MySub"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.HomeScreenActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,17 +26,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Reached only from Home; nothing outside the app should be able to start it. -->
+        <!-- Reached only from the browse screen; not startable from outside. -->
         <activity
-            android:name=".presentation.subscription.SubscriptionActivity"
+            android:name=".presentation.service.ServiceActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.HomeScreenActivity" />
+            android:parentActivityName=".MainActivity" />
 
-        <!-- The other half of the haveSub fork; same reachability as the above. -->
+        <!-- Reached only from the main card; not startable from outside. -->
         <activity
-            android:name=".presentation.nosubscription.NoSubscriptionActivity"
+            android:name=".presentation.detail.SubscriptionDetailActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.HomeScreenActivity" />
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

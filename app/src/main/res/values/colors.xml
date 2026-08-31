@@ -32,4 +32,9 @@
     <color name="plan_title_gold">#FFE8981C</color>
     <!-- Hairline highlight on the plan card, so its edge reads against the rim. -->
     <color name="plan_card_stroke">#59FFFFFF</color>
+
+    <!-- Category header + search panel -->
+    <color name="category_teal">#FF35C5D8</color>
+    <color name="search_bg">#FFF6F7F9</color>
+    <color name="chevron_orange">#FFF08A24</color>
 </resources>

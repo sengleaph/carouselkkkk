@@ -1,29 +1,66 @@
 {
-  "code": "0",
-  "msg": "success",
-  "title": "Gemezz Upgrade Plan",
-  "brandCode": "GEMEZZ",
-  "plans": [
+  "code" : "0",
+  "msgDev" : "",
+  "msg" : "success",
+  "subscribeMenu" : [
     {
-      "planCode": "daily",
-      "title": "Daily",
-      "price": "$1.00",
-      "theme": "pink",
-      "recommended": false
+      "code" : "gemez",
+      "name" : "Gemez",
+      "image" : "https://i.pinimg.com/736x/2c/4e/83/2c4e838f5f9f4c90bdacf466cd892b89.jpg",
+      "description" : "You can play unlimited game for free and you can join competition",
+      "plans" : [
+        {
+          "name" : "Daily",
+          "price" : 0.28,
+          "service" : "Gemez",
+          "ccy" : "USD",
+          "code" : "daily"
+        },
+        {
+          "name" : "Weekly",
+          "price" : 1.53,
+          "service" : "Gemez",
+          "ccy" : "USD",
+          "code" : "weekly"
+        },
+        {
+          "name" : "Monthly ",
+          "price" : 7.63,
+          "service" : "Gemez",
+          "ccy" : "USD",
+          "code" : "monthly"
+        }
+      ]
     },
     {
-      "planCode": "weekly",
-      "title": "Weekly",
-      "price": "$17.00",
-      "theme": "purple",
-      "recommended": true
-    },
-    {
-      "planCode": "monthly",
-      "title": "Monthly",
-      "price": "$60.00",
-      "theme": "blue",
-      "recommended": false
+      "code" : "Youtube",
+      "name" : "Youtube",
+      "image" : "https://i.pinimg.com/736x/44/ae/73/44ae7337bde014fc535d1cfbaa8d7584.jpg",
+      "description" : "You can play unlimited game for free and you can join competition",
+      "plans" : [
+        {
+          "name" : "Daily",
+          "price" : 0.28,
+          "service" : "Youtube",
+          "ccy" : "USD",
+          "code" : "daily"
+        },
+        {
+          "name" : "Weekly",
+          "price" : 1.53,
+          "service" : "Youtube",
+          "ccy" : "USD",
+          "code" : "weekly"
+        },
+        {
+          "name" : "Monthly ",
+          "price" : 7.63,
+          "service" : "Youtube",
+          "ccy" : "USD",
+          "code" : "monthly"
+        }
+      ]
     }
-  ]
+  ],
+  "status" : "success"
 }
